@@ -39,11 +39,17 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Nunito Sans', sans-serif;
         text-rendering: optimizeSpeed;
         line-height: 1.5;
+        background-color: ${({theme}) => theme.mainBG};
+        color: ${({theme}) => theme.text};
     }
 
     /* A elements that don't have a class get default styles */
     a:not([class]) {
         text-decoration-skip-ink: auto;
+    }
+
+    a {
+        text-decoration: none;
     }
 
     /* Make images easier to work with */
