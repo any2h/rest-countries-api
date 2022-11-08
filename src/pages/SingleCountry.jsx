@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { useQuery } from "@tanstack/react-query"
 import { Link, useParams } from "react-router-dom"
 import { HiArrowNarrowLeft } from 'react-icons/hi'
+import { useEffect, useState } from "react"
 
 const StyledSingleCountry = styled.section`
     .country-info {
@@ -42,6 +43,8 @@ const StyledSingleCountry = styled.section`
         margin-top: 40px;
         background-color: ${({ theme }) => theme.elemBG};
         color: ${({ theme }) => theme.text};
+        box-shadow: 0 0 10px 1px rgba(0,0,0,.3);
+        border-radius: 5px;
     }
 
     img {
@@ -63,6 +66,7 @@ const StyledSingleCountry = styled.section`
 
         img {
             margin-top: 80px;
+            max-height: 405px;
         }
     }
 `
@@ -70,32 +74,64 @@ const StyledSingleCountry = styled.section`
 const SingleCountry = () => {
     const { cca3 } = useParams()
     const url = `https://restcountries.com/v3.1/alpha/${cca3}?fields=name,tld,currencies,capital,region,subregion,languages,population,flags,borders,ccn3`
+    const [country, setCountry] = useState([])
+    const [borderCountries, setBorderCountries] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    
+    // const { isLoading, isError, error, data: country } = useQuery({
+    //     queryKey: ['singleCountry'],
+    //     queryFn: () => fetch(url).then(res => res.json()),
+    //     refetchOnMount: true,
+    // })
 
-    // const { isLoading, isError, error, data } = useQuery(
-    //     ['country'],
-    //     () => fetch(url).then(res => res.json())
-    // )
+    // const { isSuccess, data: borderCountries } = useQuery({
+    //     queryKey: ['borderCountries'],
+    //     queryFn: () => fetch(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`)
+    //         .then(res => res.json()),
+    //     enabled: !!country,
+    // })
 
-    const { isLoading, isError, error, data } = useQuery(
-        ['singleCountry'],
-        () => fetch(url).then(res => res.json())
-    )
+    // if (isLoading) {
+    //     return <div>Loading...</div>
+    // }
+
+    // if (isError) {
+    //     console.log('Error: ' + error)
+    //     return <div>Error...</div>
+    // }
+
+    useEffect(() => {
+        // setIsLoading(true)
+        (async () => {
+            try {
+                setIsLoading(true);
+                const fetchCountry = await fetch(url);
+                const country = await fetchCountry.json();
+                
+                if (country.borders.length > 0) {
+                    const fetchBorderCountries = await fetch(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`);
+                    const borderCountries = await fetchBorderCountries.json();
+                    setCountry(country)
+                    setBorderCountries(borderCountries)
+                    console.log(borderCountries);
+                } else {
+                    setCountry(country)
+                }
+
+                setIsLoading(false)
+            } catch (error) {
+                console.log(error);
+                setIsLoading(false)
+            }
+        })();
+    }, [cca3])
 
     if (isLoading) {
         return <div>Loading...</div>
     }
 
-    if (isError) {
-        console.log('Error: ' + error)
-        return <div>Error...</div>
-    }
+    const { name: { common, official, nativeName }, flags, population, region, subregion, languages, currencies, capital, tld, borders } = country
 
-    console.log(data)
-
-    const { name: { common, official, nativeName }, flags, population, region, subregion, languages, currencies, capital, tld, borders } = data
-
-    // console.log(Object.values(nativeName)[Object.values(nativeName).length-1])
-    // console.log(Object.values(currencies));
     return (
         <StyledSingleCountry>
             <Link to='/'><HiArrowNarrowLeft size={22} /> <span>Back</span></Link>
@@ -120,9 +156,21 @@ const SingleCountry = () => {
                             <p>Languages: <span>{Object.values(languages).join(', ')}</span></p>
                         </div>
                     </div>
+
                     <div>
                         <p>Border Countries: </p>
-                        <div>{borders.map((border, i) => <Link key={i} to={`/`}>{border}</Link>)}</div>
+                        {borderCountries.length > 0 ? 
+                            <div>{borderCountries.map((border, i) => 
+                                <Link 
+                                    key={i} 
+                                    to={`/${border.name.common}/${border.cca3}`}
+                                >
+                                    {border.name.common}
+                                </Link>)}
+                            </div> :
+                            <span>none</span>
+                        }
+
                     </div>
                 </div>
             </div>

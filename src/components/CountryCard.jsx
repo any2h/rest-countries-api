@@ -60,7 +60,7 @@ const StyledCountryCard = styled.article`
 const CountryCard = ({ name, cca3, flags, capital, population, region }) => {
     return (
         <StyledCountryCard>
-            <Link to={`${name.common}/${cca3}`}>
+            <Link to={`/${name.common}/${cca3}`}>
                 <div>
                     <img src={flags.svg} alt={name.official} />
                 </div>

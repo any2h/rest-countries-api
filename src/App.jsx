@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { variables, darkMode, lightMode } from './themes'
 import GlobalStyle from './GlobalStlye'
 import Header from './components/Header'
@@ -18,14 +17,12 @@ function App() {
         <GlobalStyle />
         <Header />
         <main>
-          <QueryClientProvider client={new QueryClient()}>
             <Container>
               <Routes>
                 <Route path='/' element={<CountryList />} />
                 <Route path=':common/:cca3' element={<SingleCountry />} />
               </Routes>
             </Container>
-          </QueryClientProvider>
         </main>
       </ThemeProvider>
     </div>
