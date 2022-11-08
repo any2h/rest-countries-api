@@ -65,6 +65,7 @@ const GlobalStyle = createGlobalStyle`
     textarea,
     select {
         font: inherit;
+        color: inherit;
     }
 
     /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */

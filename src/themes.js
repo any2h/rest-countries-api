@@ -26,10 +26,12 @@ export const darkMode = {
     mainBG: colors.veryDarkBlue1,
     elemBG: colors.darkBlue,
     text: colors.white,
+    shadow: '0 0 10px 1px rgba(0,0,0,.3)',
 }
 
 export const lightMode = {
     mainBG: colors.veryDarkGray,
     elemBG: colors.white,
     text: colors.veryDarkBlue2,
+    shadow: '0 0 10px 1px rgba(0,0,0,.3)',
 }

@@ -4,6 +4,7 @@ import Container from "./Container"
 const StyledHeader = styled.header`
     height: 80px;
     background-color: ${({ theme }) => theme.elemBG};
+    box-shadow: ${({theme}) => theme.shadow};
 
     > div {
         height: 100%;

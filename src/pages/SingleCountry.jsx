@@ -43,7 +43,7 @@ const StyledSingleCountry = styled.section`
         margin-top: 40px;
         background-color: ${({ theme }) => theme.elemBG};
         color: ${({ theme }) => theme.text};
-        box-shadow: 0 0 10px 1px rgba(0,0,0,.3);
+        box-shadow: ${({theme}) => theme.shadow};
         border-radius: 5px;
     }
 

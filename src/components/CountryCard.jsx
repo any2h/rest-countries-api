@@ -7,7 +7,7 @@ const StyledCountryCard = styled.article`
     justify-content: space-between;
     border-radius: 5px;
     background-color: ${({theme}) => theme.elemBG};
-    box-shadow: 0 0 10px 1px rgba(0,0,0,.3);
+    box-shadow: ${({theme}) => theme.shadow};
     margin-bottom: 50px;
 
     img {
