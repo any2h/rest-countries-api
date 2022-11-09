@@ -74,13 +74,13 @@ const SingleCountry = () => {
     const { cca3 } = useParams()
     const url = `https://restcountries.com/v3.1/alpha/${cca3}?fields=name,tld,currencies,capital,region,subregion,languages,population,flags,borders,ccn3`
 
-    const fetchCountry = async () => {
-        const URL = name ? `https://restcountries.com/v3.1/name/${name}` : `https://restcountries.com/v3.1/all`;
-        const response = await fetch(URL)
-        const data = response.json()
-        console.log(data)
-        return data
-    }
+    // const fetchCountry = async () => {
+    //     const URL = name ? `https://restcountries.com/v3.1/name/${name}` : `https://restcountries.com/v3.1/all`;
+    //     const response = await fetch(URL)
+    //     const data = response.json()
+    //     console.log(data)
+    //     return data
+    // }
 
     const { isLoading, isError, error, data: country } = useQuery({
         queryKey: ['singleCountry', cca3],
@@ -89,7 +89,8 @@ const SingleCountry = () => {
 
     const { isSuccess, data: borderCountry } = useQuery({
         queryKey: ['borderCountry', cca3],
-        queryFn: () => fetch(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`)
+        queryFn: 
+            () => fetch(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`)
             .then(res => res.json()),
         enabled: !!country,
     })
@@ -141,7 +142,7 @@ const SingleCountry = () => {
                                     {border.name.common}
                                 </Link>)}
                             </div> :
-                            <span>none</span>
+                            <span>no land borders with other countries.</span>
                         }
 
                     </div>

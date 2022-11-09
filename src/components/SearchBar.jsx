@@ -1,11 +1,23 @@
 import styled from "styled-components"
 import { useEffect, useRef } from 'react'
+import { AiOutlineSearch } from 'react-icons/ai'
 
 const StyledSearchBar = styled.div`
     display: flex;
     flex-direction: column;
     gap: 50px;
     padding-block: 30px;
+
+    > form:first-child {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        svg {
+            position: absolute;
+            left: 1.5rem;
+        }
+    }
 
     input, select {
         height: 60px;
@@ -14,6 +26,11 @@ const StyledSearchBar = styled.div`
         border: 0;
         outline: 0;
         box-shadow: ${({theme}) => theme.shadow};
+    }
+
+    input {
+        width: 100%;
+        text-indent: 4rem;
     }
 
     select {
@@ -63,6 +80,7 @@ const SearchBar = ({ name, setName, filter, setFilter }) => {
     return (
         <StyledSearchBar>
             <form onSubmit={handleSubmit}>
+                <AiOutlineSearch size={22} />
                 <input 
                     type="text" 
                     placeholder="Search for a country..."

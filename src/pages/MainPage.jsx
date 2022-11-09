@@ -8,10 +8,6 @@ const MainPage = () => {
     const [name, setName] = useState('')
     console.log(name);
 
-
-    // console.log(data);
-    // console.log(countryList);
-
     return (
         <main>
             <SearchBar 

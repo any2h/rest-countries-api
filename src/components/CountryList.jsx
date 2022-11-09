@@ -24,7 +24,6 @@ const CountryList = ({ name, filter }) => {
         const URL = name ? `https://restcountries.com/v3.1/name/${name}` : `https://restcountries.com/v3.1/all`;
         const response = await fetch(URL)
         const data = response.json()
-        console.log(data)
         return data
     }
 
@@ -46,12 +45,17 @@ const CountryList = ({ name, filter }) => {
 
     if (data.status === 404) {
         console.log('Error: ' + error)
-        return <div>Error...</div>
+        return <div>No such country...</div>
     }
 
     const countryList = data.filter(data => filter ? data.region === filter : true);
-    const noCap = data.filter(data => !data.cca3);
-    console.log(noCap)
+
+    // No Fetch Filter
+    // const filterByName = countryList.filter(data => 
+    //     data.name.common.toLowerCase().includes(name) ||
+    //     data.name.official.toLowerCase().includes(name)
+    // )
+    // console.log(filterByName);
 
     return (
         <StyledCountryList>
