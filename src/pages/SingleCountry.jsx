@@ -2,7 +2,6 @@ import styled from "styled-components"
 import { useQuery } from "@tanstack/react-query"
 import { Link, useParams } from "react-router-dom"
 import { HiArrowNarrowLeft } from 'react-icons/hi'
-import { useEffect, useState } from "react"
 
 const StyledSingleCountry = styled.section`
     .country-info {
@@ -74,60 +73,34 @@ const StyledSingleCountry = styled.section`
 const SingleCountry = () => {
     const { cca3 } = useParams()
     const url = `https://restcountries.com/v3.1/alpha/${cca3}?fields=name,tld,currencies,capital,region,subregion,languages,population,flags,borders,ccn3`
-    const [country, setCountry] = useState([])
-    const [borderCountries, setBorderCountries] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    
-    // const { isLoading, isError, error, data: country } = useQuery({
-    //     queryKey: ['singleCountry'],
-    //     queryFn: () => fetch(url).then(res => res.json()),
-    //     refetchOnMount: true,
-    // })
 
-    // const { isSuccess, data: borderCountries } = useQuery({
-    //     queryKey: ['borderCountries'],
-    //     queryFn: () => fetch(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`)
-    //         .then(res => res.json()),
-    //     enabled: !!country,
-    // })
+    const fetchCountry = async () => {
+        const URL = name ? `https://restcountries.com/v3.1/name/${name}` : `https://restcountries.com/v3.1/all`;
+        const response = await fetch(URL)
+        const data = response.json()
+        console.log(data)
+        return data
+    }
 
-    // if (isLoading) {
-    //     return <div>Loading...</div>
-    // }
+    const { isLoading, isError, error, data: country } = useQuery({
+        queryKey: ['singleCountry', cca3],
+        queryFn: () => fetch(url).then(res => res.json()),
+    })
 
-    // if (isError) {
-    //     console.log('Error: ' + error)
-    //     return <div>Error...</div>
-    // }
-
-    useEffect(() => {
-        // setIsLoading(true)
-        (async () => {
-            try {
-                setIsLoading(true);
-                const fetchCountry = await fetch(url);
-                const country = await fetchCountry.json();
-                
-                if (country.borders.length > 0) {
-                    const fetchBorderCountries = await fetch(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`);
-                    const borderCountries = await fetchBorderCountries.json();
-                    setCountry(country)
-                    setBorderCountries(borderCountries)
-                    console.log(borderCountries);
-                } else {
-                    setCountry(country)
-                }
-
-                setIsLoading(false)
-            } catch (error) {
-                console.log(error);
-                setIsLoading(false)
-            }
-        })();
-    }, [cca3])
+    const { isSuccess, data: borderCountry } = useQuery({
+        queryKey: ['borderCountry', cca3],
+        queryFn: () => fetch(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`)
+            .then(res => res.json()),
+        enabled: !!country,
+    })
 
     if (isLoading) {
         return <div>Loading...</div>
+    }
+
+    if (isError) {
+        console.log('Error: ' + error)
+        return <div>Error...</div>
     }
 
     const { name: { common, official, nativeName }, flags, population, region, subregion, languages, currencies, capital, tld, borders } = country
@@ -159,8 +132,8 @@ const SingleCountry = () => {
 
                     <div>
                         <p>Border Countries: </p>
-                        {borderCountries.length > 0 ? 
-                            <div>{borderCountries.map((border, i) => 
+                        {isSuccess && borderCountry.length > 0 ? 
+                            <div>{borderCountry.map((border, i) => 
                                 <Link 
                                     key={i} 
                                     to={`/${border.name.common}/${border.cca3}`}

@@ -11,6 +11,8 @@ const StyledCountryCard = styled.article`
     margin-bottom: 50px;
 
     img {
+        width: 100%;
+        max-height: 200px;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         transition: all .25s ease-in-out;
@@ -47,6 +49,10 @@ const StyledCountryCard = styled.article`
     @media ${({theme}) => theme.tablet} {
         margin-bottom: 0;
 
+        img {
+            max-height: 180px;
+        }
+
         h4 {
             font-size: ${({ theme }) => theme.fontSizes.sm};
         }
@@ -62,16 +68,14 @@ const CountryCard = ({ name, cca3, flags, capital, population, region }) => {
         <StyledCountryCard>
             <Link to={`/${name.common}/${cca3}`}>
                 <div>
-                    <img src={flags.svg} alt={name.official} />
+                    <img src={flags.png} alt={name.official} />
                 </div>
-                {/* <div className="flag" style={{backgroundImage: `url(${flags.svg})`}}>
-                </div> */}
             </Link>
             <div>
                 <h4>{name.official}</h4>
                 <p>Population: <span>{population.toLocaleString('en')}</span></p>
                 <p>Region: <span>{region}</span></p>
-                <p>Capital: <span>{capital.join(', ')}</span></p>
+                <p>Capital: <span>{capital ? capital.join(', ') : `none`}</span></p>
             </div>
         </StyledCountryCard>
     )

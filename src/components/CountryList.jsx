@@ -1,12 +1,9 @@
-import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import styled from "styled-components"
-import CountryCard from "./CountryCard"
-import SearchBar from "./SearchBar"
+import CountryCard from "../components/CountryCard"
 
 const StyledCountryList = styled.section`
     display: grid;
-    
 
     @media ${({theme}) => theme.tablet} {
         grid-template-columns: repeat(2, 1fr);
@@ -22,21 +19,22 @@ const StyledCountryList = styled.section`
 const baseURL = 'https://restcountries.com/v3.1/all?fields=ccn3,cca3,name,capital,region,population,flags'
 const nameURL = 'https://restcountries.com/v3.1/name/'
 
-const CountryList = () => {
-    const [filter, setFilter] = useState(null)
-    const [name, setName] = useState('')
-    console.log(name);
-    const { isLoading, isError, error, data } = useQuery(
-        ['country'],
-        () => fetch(url).then(res => res.json())
-    )
-    // const { isLoading, isError, error, data } = useQuery({
-    //     queryKey: ['country'],
-    //     queryFn: name ? 
-    //         () => fetch(nameURL + 'rus').then(res => res.json()) :
-    //         () => fetch(baseURL).then(res => res.json()),
-    // })
+const CountryList = ({ name, filter }) => {
+    const fetchCountry = async () => {
+        const URL = name ? `https://restcountries.com/v3.1/name/${name}` : `https://restcountries.com/v3.1/all`;
+        const response = await fetch(URL)
+        const data = response.json()
+        console.log(data)
+        return data
+    }
+
+    const { isLoading, isError, error, data } = useQuery({
+        queryKey: ['country', name],
+        queryFn: fetchCountry,
+    })
+
     console.log(data)
+
     if (isLoading) {
         return <div>Loading...</div>
     }
@@ -46,24 +44,21 @@ const CountryList = () => {
         return <div>Error...</div>
     }
 
-    // console.log(data);
+    if (data.status === 404) {
+        console.log('Error: ' + error)
+        return <div>Error...</div>
+    }
+
     const countryList = data.filter(data => filter ? data.region === filter : true);
-    // console.log(countryList);
+    const noCap = data.filter(data => !data.cca3);
+    console.log(noCap)
 
     return (
-        <>
-            <SearchBar 
-                filter={filter} 
-                setFilter={setFilter} 
-                name={name} 
-                setName={setName} 
-            />
-            <StyledCountryList>
-                {countryList.map((country, i) => 
-                    <CountryCard key={i} {...country} />
-                )}
-            </StyledCountryList>
-        </>
+        <StyledCountryList>
+            {countryList.map((country, i) => 
+                <CountryCard key={i} {...country} />
+            )}
+        </StyledCountryList>
     )
 }
 

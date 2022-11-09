@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { useEffect, useRef } from 'react'
 
 const StyledSearchBar = styled.div`
     display: flex;
@@ -19,9 +20,29 @@ const StyledSearchBar = styled.div`
         width: 250px;
         text-indent: .75rem;
     }
+
+    @media ${({theme}) => theme.laptop} {
+        flex-direction: row;
+        justify-content: space-between;
+        padding-block: 48px;
+
+        input, select {
+            height: 55px;
+        }
+        
+        input {
+            width: 480px;
+        }
+    }
 `
 
 const SearchBar = ({ name, setName, filter, setFilter }) => {
+    const inputRef = useRef(null)
+
+    useEffect(() => {
+        inputRef.current.focus()
+    }, [])
+    
     const handleSelect = (e) => {
         if (e.target.value === 'All') {
             setFilter(null)
@@ -31,17 +52,23 @@ const SearchBar = ({ name, setName, filter, setFilter }) => {
     }
 
     const handleInput = (e) => {
-        e.preventDefault()
         setName(e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setName(inputRef.current.value)
     }
 
     return (
         <StyledSearchBar>
-            <form onSubmit={handleInput}>
+            <form onSubmit={handleSubmit}>
                 <input 
                     type="text" 
                     placeholder="Search for a country..."
+                    value={name}
                     onChange={handleInput}
+                    ref={inputRef}
                 />
             </form>
             <form>

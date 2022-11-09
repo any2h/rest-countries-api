@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { variables, darkMode, lightMode } from './themes'
 import GlobalStyle from './GlobalStlye'
+import MainPage from './pages/MainPage'
 import Header from './components/Header'
 import CountryList from './components/CountryList'
 import SingleCountry from './pages/SingleCountry'
@@ -16,14 +17,12 @@ function App() {
       <ThemeProvider theme={{ ...darkMode, ...variables }}>
         <GlobalStyle />
         <Header />
-        <main>
-            <Container>
-              <Routes>
-                <Route path='/' element={<CountryList />} />
-                <Route path=':common/:cca3' element={<SingleCountry />} />
-              </Routes>
-            </Container>
-        </main>
+        <Container>
+          <Routes>
+            <Route path='/' element={<MainPage />} />
+            <Route path=':common/:cca3' element={<SingleCountry />} />
+          </Routes>
+        </Container>
       </ThemeProvider>
     </div>
   )
