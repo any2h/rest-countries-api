@@ -30,6 +30,31 @@ const StyledSingleCountry = styled.section`
                 margin-bottom: 2rem;
             }
         }
+
+        > div:last-child {
+            > div {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: .75rem;
+                margin-top: 1rem;
+
+                a {
+                    display: inline-grid;
+                    place-content: center;
+                    padding: .3rem 1.25rem;
+                    margin-top: 0;
+                    background-color: ${({theme}) => theme.elemBG};
+                    box-shadow: ${({theme}) => theme.shadow};
+                    border-radius: 3px;
+                    font-weight: 300;
+
+                    &:hover {
+                        scale: 1.1;
+                    }
+                }
+            }
+        }
     }
 
     > a {
@@ -53,7 +78,14 @@ const StyledSingleCountry = styled.section`
     @media ${({theme}) => theme.laptop} {
         > div {
             display: flex;
-            align-items: center;
+            justify-content: space-between;
+            /* align-items: center; */
+            margin-top: 80px;
+            gap: clamp(3rem, 7.5vw, 9rem);
+
+            > div {
+                flex: 1;
+            }
         }
 
         > a {
@@ -64,8 +96,29 @@ const StyledSingleCountry = styled.section`
         }
 
         img {
-            margin-top: 80px;
+            margin-block: 0;
             max-height: 405px;
+        }
+
+        .country-info {
+            > div {
+                display: flex;
+            }
+
+            > div:first-of-type {
+                justify-content: space-between;
+                /* gap: clamp(2.25rem, 5vw, 6.5rem); */
+            }
+            
+            > div:last-child {
+                /* align-items: center; */
+                gap: 1rem;
+                margin-bottom: 0;
+
+                div {
+                    margin-top: 0;
+                }
+            }
         }
     }
 `
@@ -73,7 +126,6 @@ const StyledSingleCountry = styled.section`
 const SingleCountry = () => {
     const { cca3 } = useParams()
     const url = `https://restcountries.com/v3.1/alpha/${cca3}?fields=name,tld,currencies,capital,region,subregion,languages,population,flags,borders,ccn3`
-
     // const fetchCountry = async () => {
     //     const URL = name ? `https://restcountries.com/v3.1/name/${name}` : `https://restcountries.com/v3.1/all`;
     //     const response = await fetch(URL)
@@ -121,7 +173,7 @@ const SingleCountry = () => {
                             <p>Native Name: <span>{Object.values(nativeName).map(name => name.common).join(', ')}</span></p>
                             <p>Population: <span>{population.toLocaleString('en')}</span></p>
                             <p>Region: <span>{region}</span></p>
-                            <p>Sub Region: <span></span>{subregion}</p>
+                            <p>Sub Region: <span>{subregion}</span></p>
                             <p>Capital: <span>{capital.join(', ')}</span></p>
                         </div>
                         <div>

@@ -16,8 +16,8 @@ const StyledCountryList = styled.section`
     }
 `
 
-const baseURL = 'https://restcountries.com/v3.1/all?fields=ccn3,cca3,name,capital,region,population,flags'
-const nameURL = 'https://restcountries.com/v3.1/name/'
+// const baseURL = 'https://restcountries.com/v3.1/all?fields=ccn3,cca3,name,capital,region,population,flags'
+// const nameURL = 'https://restcountries.com/v3.1/name/'
 
 const CountryList = ({ name, filter }) => {
     const fetchCountry = async () => {
@@ -31,8 +31,6 @@ const CountryList = ({ name, filter }) => {
         queryKey: ['country', name],
         queryFn: fetchCountry,
     })
-
-    console.log(data)
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -48,9 +46,13 @@ const CountryList = ({ name, filter }) => {
         return <div>No such country...</div>
     }
 
-    const countryList = data.filter(data => filter ? data.region === filter : true);
+    // Если нет поиска по имени или фильтра по региону, показывать только 50 стран
+    const countryList = name || filter ? 
+        data.filter(data => filter ? data.region === filter : true) :
+        data.slice(0, 50);
+    // console.log(countryList);
 
-    // No Fetch Filter
+    // No ReFetch Filter
     // const filterByName = countryList.filter(data => 
     //     data.name.common.toLowerCase().includes(name) ||
     //     data.name.official.toLowerCase().includes(name)

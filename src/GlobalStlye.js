@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
     *::before,
     *::after {
         box-sizing: border-box;
+        transition: all .25s ease-in-out;
     }
 
     /* Remove default margin */
@@ -20,12 +21,6 @@ const GlobalStyle = createGlobalStyle`
     dl,
     dd {
         margin: 0;
-    }
-
-    /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-    ul[role='list'],
-    ol[role='list'] {
-        list-style: none;
     }
 
     /* Set core root defaults */
@@ -50,6 +45,7 @@ const GlobalStyle = createGlobalStyle`
 
     a {
         text-decoration: none;
+        color: inherit;
     }
 
     /* Make images easier to work with */

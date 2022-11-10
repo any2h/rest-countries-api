@@ -1,12 +1,11 @@
-import { useState } from "react"
-// import styled from "styled-components"
+import { useState, memo } from "react"
 import CountryList from "../components/CountryList"
 import SearchBar from "../components/SearchBar"
 
-const MainPage = () => {
+const MainPage = memo(() => {
     const [filter, setFilter] = useState(null)
     const [name, setName] = useState('')
-    console.log(name);
+    // console.log(name);
 
     return (
         <main>
@@ -22,6 +21,6 @@ const MainPage = () => {
             />
         </main>
     )
-}
+})
 
 export default MainPage

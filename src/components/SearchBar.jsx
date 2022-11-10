@@ -57,7 +57,7 @@ const SearchBar = ({ name, setName, filter, setFilter }) => {
     const inputRef = useRef(null)
 
     useEffect(() => {
-        inputRef.current.focus()
+        // inputRef.current.focus()
     }, [])
     
     const handleSelect = (e) => {
@@ -68,8 +68,9 @@ const SearchBar = ({ name, setName, filter, setFilter }) => {
         setFilter(e.target.value)
     }
 
-    const handleInput = (e) => {
-        setName(e.target.value)
+    const handleChange = (e) => {
+        const value = e.target.value.replaceAll(/[`./\\;?&#+]/g, '')
+        setName(value)
     }
 
     const handleSubmit = (e) => {
@@ -85,7 +86,7 @@ const SearchBar = ({ name, setName, filter, setFilter }) => {
                     type="text" 
                     placeholder="Search for a country..."
                     value={name}
-                    onChange={handleInput}
+                    onChange={handleChange}
                     ref={inputRef}
                 />
             </form>
