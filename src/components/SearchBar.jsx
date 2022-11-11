@@ -69,7 +69,7 @@ const SearchBar = ({ name, setName, filter, setFilter }) => {
     }
 
     const handleChange = (e) => {
-        const value = e.target.value.replaceAll(/[`./\\;?&#+]/g, '')
+        const value = e.target.value.replace(/^\s|[`./\\;?&#+]/g, '')
         setName(value)
     }
 
