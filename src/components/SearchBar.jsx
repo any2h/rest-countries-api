@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { useEffect, useRef } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
 
 const StyledSearchBar = styled.div`
@@ -54,12 +53,6 @@ const StyledSearchBar = styled.div`
 `
 
 const SearchBar = ({ name, setName, filter, setFilter }) => {
-    const inputRef = useRef(null)
-
-    useEffect(() => {
-        // inputRef.current.focus()
-    }, [])
-    
     const handleSelect = (e) => {
         if (e.target.value === 'All') {
             setFilter(null)
@@ -87,11 +80,10 @@ const SearchBar = ({ name, setName, filter, setFilter }) => {
                     placeholder="Search for a country..."
                     value={name}
                     onChange={handleChange}
-                    ref={inputRef}
                 />
             </form>
             <form>
-                <select name="" id="" defaultValue={'Filter by Region'} onChange={handleSelect}>
+                <select defaultValue={'Filter by Region'} onChange={handleSelect}>
                     <option hidden>Filter by Region</option>
                     {filter ? <option value='All'>All</option> : null}
                     <option value="Africa">Africa</option>

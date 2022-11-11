@@ -79,7 +79,6 @@ const StyledSingleCountry = styled.section`
         > div {
             display: flex;
             justify-content: space-between;
-            /* align-items: center; */
             margin-top: 80px;
             gap: clamp(3rem, 7.5vw, 9rem);
 
@@ -107,11 +106,9 @@ const StyledSingleCountry = styled.section`
 
             > div:first-of-type {
                 justify-content: space-between;
-                /* gap: clamp(2.25rem, 5vw, 6.5rem); */
             }
             
             > div:last-child {
-                /* align-items: center; */
                 gap: 1rem;
                 margin-bottom: 0;
 
@@ -126,13 +123,6 @@ const StyledSingleCountry = styled.section`
 const SingleCountry = () => {
     const { cca3 } = useParams()
     const url = `https://restcountries.com/v3.1/alpha/${cca3}?fields=name,tld,currencies,capital,region,subregion,languages,population,flags,borders,ccn3`
-    // const fetchCountry = async () => {
-    //     const URL = name ? `https://restcountries.com/v3.1/name/${name}` : `https://restcountries.com/v3.1/all`;
-    //     const response = await fetch(URL)
-    //     const data = response.json()
-    //     console.log(data)
-    //     return data
-    // }
 
     const { isLoading, isError, error, data: country } = useQuery({
         queryKey: ['singleCountry', cca3],
@@ -156,7 +146,7 @@ const SingleCountry = () => {
         return <div>Error...</div>
     }
 
-    const { name: { common, official, nativeName }, flags, population, region, subregion, languages, currencies, capital, tld, borders } = country
+    const { name: { common, nativeName }, flags, population, region, subregion, languages, currencies, capital, tld, borders } = country
 
     return (
         <StyledSingleCountry>
